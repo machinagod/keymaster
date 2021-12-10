@@ -96,6 +96,12 @@ try:
 except (ModuleNotFoundError, ImportError):
     zwave_supported = False
 
+# Attempt to import ZHA domain
+try:
+    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN
+except (ModuleNotFoundError, ImportError):
+    zha_supported = False
+
 _LOGGER = logging.getLogger(__name__)
 
 
@@ -142,6 +148,14 @@ def async_using_zwave_js(
     return zwave_js_supported and _async_using(
         ZWAVE_JS_DOMAIN, lock, entity_id, ent_reg
     )
+
+
+@callback
+def async_using_zha(
+    lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
+) -> bool:
+    """Returns whether the zha integration is configured."""
+    return zha_supported and _async_using(ZHA_DOMAIN, lock, entity_id, ent_reg)
 
 
 def get_node_id(hass: HomeAssistant, entity_id: str) -> Optional[str]:

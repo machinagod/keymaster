@@ -30,6 +30,7 @@ from .const import (
 from .exceptions import ZWaveIntegrationNotConfiguredError
 from .helpers import (
     async_using_ozw,
+    async_using_zha,
     async_using_zwave,
     async_using_zwave_js,
     get_code_slots_list,
@@ -59,6 +60,16 @@ try:
     from openzwavemqtt.const import CommandClass
 
     from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN
+except (ModuleNotFoundError, ImportError):
+    pass
+
+# Attempt to import ZHA domain
+try:
+    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN
+    from homeassistant.components.zwave_js.lock import (
+        SERVICE_SET_LOCK_USER_CODE,
+        SERVICE_CLEAR_LOCK_USER_CODE,
+    )
 except (ModuleNotFoundError, ImportError):
     pass
 
@@ -156,6 +167,10 @@ async def add_code(
             hass, ZWAVE_JS_DOMAIN, SERVICE_SET_LOCK_USERCODE, servicedata
         )
 
+    elif async_using_zha(entity_id=entity_id, ent_reg=async_get_entity_registry(hass)):
+        servicedata[ATTR_ENTITY_ID] = entity_id
+        await call_service(hass, ZHA_DOMAIN, SERVICE_SET_LOCK_USER_CODE, servicedata)
+
     elif async_using_ozw(entity_id=entity_id, ent_reg=async_get_entity_registry(hass)):
         servicedata[ATTR_ENTITY_ID] = entity_id
         await call_service(hass, OZW_DOMAIN, SET_USERCODE, servicedata)
@@ -192,6 +207,13 @@ async def clear_code(hass: HomeAssistant, entity_id: str, code_slot: int) -> Non
         await call_service(
             hass, ZWAVE_JS_DOMAIN, SERVICE_CLEAR_LOCK_USERCODE, servicedata
         )
+
+    elif async_using_zha(entity_id=entity_id, ent_reg=async_get_entity_registry(hass)):
+        servicedata = {
+            ATTR_ENTITY_ID: entity_id,
+            ATTR_CODE_SLOT: code_slot,
+        }
+        await call_service(hass, ZHA_DOMAIN, SERVICE_CLEAR_LOCK_USER_CODE, servicedata)
 
     elif async_using_ozw(entity_id=entity_id, ent_reg=async_get_entity_registry(hass)):
         # Call dummy slot first as a workaround
@@ -342,7 +364,9 @@ def generate_package_files(hass: HomeAssistant, name: str) -> None:
         "SENSORALARMTYPE": sensoralarmtype,
         "SENSORALARMLEVEL": sensoralarmlevel,
         "HIDE_PINS": hide_pins,
-        "PARENTLOCK": "" if primary_lock.parent is None else slugify(primary_lock.parent),
+        "PARENTLOCK": ""
+        if primary_lock.parent is None
+        else slugify(primary_lock.parent),
     }
 
     # Replace variables in common file

@@ -24,6 +24,7 @@ from .const import (
 from .helpers import (
     async_update_zwave_js_nodes_and_devices,
     async_using_ozw,
+    async_using_zha,
     async_using_zwave,
     async_using_zwave_js,
 )
@@ -85,6 +86,8 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
     child_locks = hass.data[DOMAIN][config_entry.entry_id][CHILD_LOCKS]
     if async_using_zwave_js(lock=primary_lock):
         entity = ZwaveJSNetworkReadySensor(primary_lock, child_locks)
+    elif async_using_zha(lock=primary_lock):
+        entity = ZHANetworkReadySensor(primary_lock, child_locks)
     elif async_using_ozw(lock=primary_lock):
         entity = OZWNetworkReadySensor(primary_lock, child_locks)
     elif async_using_zwave(lock=primary_lock):

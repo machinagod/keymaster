@@ -60,6 +60,7 @@ from .lock import KeymasterLock
 zwave_supported = True
 ozw_supported = True
 zwave_js_supported = True
+zha_supported = True
 
 # TODO: At some point we should deprecate ozw and zwave and require zwave_js.
 # At that point, we will not need this try except logic and can remove a bunch

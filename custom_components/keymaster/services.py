@@ -66,7 +66,7 @@ except (ModuleNotFoundError, ImportError):
 # Attempt to import ZHA domain
 try:
     from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN
-    from homeassistant.components.zwave_js.lock import (
+    from homeassistant.components.zha.lock import (
         SERVICE_SET_LOCK_USER_CODE,
         SERVICE_CLEAR_LOCK_USER_CODE,
     )

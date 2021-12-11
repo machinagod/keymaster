@@ -176,7 +176,9 @@ class ZHANetworkReadySensor(BaseNetworkReadySensor):
                 _LOGGER.info("Found your lock %s", entity_id)
                 self._lock_found = True
 
-        network_ready = self.primary_lock.lock_entity_id.available
+        network_ready = True
+        # network_ready = ZhaEntity.available
+        # network_ready = self.primary_lock.lock_entity_id.available
 
         # If network_ready and self._attr_is_on are both true or both false, we don't need
         # to do anything since there is nothing to update.

@@ -47,9 +47,7 @@ from .lock import KeymasterLock
 try:
     from zwave_js_server.util.lock import get_usercode_from_node
 
-    from homeassistant.components.zwave_js.const import (
-        DOMAIN as ZWAVE_JS_DOMAIN,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zwave_js.const import DOMAIN as ZWAVE_JS_DOMAIN  # pylint: disable=ungrouped-imports
     from homeassistant.components.zwave_js.helpers import (
         async_get_node_from_entity_id,
     )  # pylint: disable=ungrouped-imports
@@ -63,9 +61,7 @@ except (ModuleNotFoundError, ImportError):
 try:
     from openzwavemqtt.const import CommandClass
 
-    from homeassistant.components.ozw import (
-        DOMAIN as OZW_DOMAIN,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     pass
 

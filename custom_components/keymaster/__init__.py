@@ -98,9 +98,7 @@ try:
     from zwave_js_server.model.node import Node as ZwaveJSNode
     from zwave_js_server.util.lock import get_usercode_from_node, get_usercodes
 
-    from homeassistant.components.zwave_js import (
-        ZWAVE_JS_NOTIFICATION_EVENT,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zwave_js import ZWAVE_JS_NOTIFICATION_EVENT  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     pass
 
@@ -120,9 +118,7 @@ except (ModuleNotFoundError, ImportError):
 
 # Attempt to import ZHA domain
 try:
-    from homeassistant.components.zha.core.const import (
-        CHANNEL_DOORLOCK,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zha.core.const import CHANNEL_DOORLOCK  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     pass
 
@@ -157,9 +153,7 @@ async def homeassistant_started_listener(
     )
 
 
-async def async_setup(
-    hass: HomeAssistant, config: Config
-) -> bool:  # pylint: disable=unused-argument
+async def async_setup(hass: HomeAssistant, config: Config) -> bool:  # pylint: disable=unused-argument
     """Disallow configuration via YAML."""
     return True
 

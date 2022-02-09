@@ -84,20 +84,16 @@ except (ModuleNotFoundError, ImportError):
 # and assuming it can't be if the dependent packages aren't
 # installed on this Home Assistant instance
 try:
-    import openzwavemqtt as ozw_module  # pylint: disable=unused-import
+    import openzwavemqtt as ozw_module  # pylint: disable=unused-import noqa: F401
 
-    from homeassistant.components.ozw import (
-        DOMAIN as OZW_DOMAIN,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     OZW_SUPPORTED = False
 
 try:
-    import openzwave as zwave_module  # pylint: disable=unused-import
+    import openzwave as zwave_module  # pylint: disable=unused-import noqa: F401
 
-    from homeassistant.components.zwave.const import (
-        DOMAIN as ZWAVE_DOMAIN,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zwave.const import DOMAIN as ZWAVE_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     ZWAVE_SUPPORTED = False
 

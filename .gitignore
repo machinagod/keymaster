@@ -4,3 +4,4 @@ custom_components/*/__pycache__/
 venv
 *.pyc
 .coverage
+.tox/

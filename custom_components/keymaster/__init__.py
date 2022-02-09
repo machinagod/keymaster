@@ -534,6 +534,7 @@ class LockUsercodeUpdateCoordinator(DataUpdateCoordinator):
     def __init__(
         self, hass: HomeAssistant, config_entry: ConfigEntry, ent_reg: EntityRegistry
     ) -> None:
+        """Initilize."""
         self._primary_lock: KeymasterLock = hass.data[DOMAIN][config_entry.entry_id][
             PRIMARY_LOCK
         ]

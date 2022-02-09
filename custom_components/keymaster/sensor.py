@@ -33,7 +33,7 @@ _LOGGER = logging.getLogger(__name__)
 async def async_setup_entry(
     hass: HomeAssistant, entry: ConfigEntry, async_add_entities
 ):
-    """Setup config entry."""
+    """Configure platform."""
     # Add entities for all defined slots
     start_from = entry.data[CONF_START]
     code_slots = entry.data[CONF_SLOTS]
@@ -84,7 +84,7 @@ async def async_setup_entry(
 
 
 class CodesSensor(CoordinatorEntity, SensorEntity):
-    """Representation of a sensor"""
+    """Representation of a sensor."""
 
     def __init__(self, hass: HomeAssistant, entry: ConfigEntry, code_slot: int) -> None:
         """Initialize the sensor."""

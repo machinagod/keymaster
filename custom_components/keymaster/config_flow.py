@@ -92,6 +92,7 @@ class KeyMasterFlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
     @staticmethod
     @callback
     def async_get_options_flow(config_entry: config_entries.ConfigEntry):
+        """Call options flow."""
         return KeyMasterOptionsFlow(config_entry)
 
 
@@ -127,9 +128,11 @@ class KeyMasterOptionsFlow(config_entries.OptionsFlow):
 
 
 def _available_parent_locks(hass: HomeAssistant, entry_id: str = None) -> list:
-    """Find other keymaster configurations and list them as posible
-    parent locks if they are not a child lock already."""
-
+    """Check for other configurations.
+    
+    Find other keymaster configurations and list them as posible
+    parent locks if they are not a child lock already.
+    """
     data = ["(none)"]
     if DOMAIN not in hass.data:
         return data
@@ -170,7 +173,7 @@ def _get_schema(
     default_dict: Dict[str, Any],
     entry_id: str = None,
 ) -> vol.Schema:
-    """Gets a schema using the default_dict as a backup."""
+    """Get schema using the default_dict as a backup."""
     if user_input is None:
         user_input = {}
 
@@ -180,7 +183,7 @@ def _get_schema(
         default_dict = check_dict
 
     def _get_default(key: str, fallback_default: Any = None) -> None:
-        """Gets default value for key."""
+        """Get default value for key."""
         return user_input.get(key, default_dict.get(key, fallback_default))
 
     return vol.Schema(

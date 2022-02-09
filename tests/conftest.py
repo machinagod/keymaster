@@ -1,4 +1,4 @@
-""" Fixtures for keymaster tests. """
+"""Fixtures for keymaster tests."""
 import asyncio
 import json
 from unittest.mock import AsyncMock, MagicMock, patch
@@ -20,6 +20,7 @@ pytest_plugins = "pytest_homeassistant_custom_component"
 
 @pytest.fixture(autouse=True)
 def auto_enable_custom_integrations(enable_custom_integrations):
+    """Enable custom integration tests."""
     yield
 
 
@@ -34,6 +35,7 @@ def skip_notifications_fixture():
 
 @pytest.fixture(autouse=True)
 async def mock_init_child_locks():
+    """Mock init_child_locks."""
     with patch(
         "custom_components.keymaster.services.init_child_locks", return_value=True
     ), patch("custom_components.keymaster.init_child_locks"):
@@ -114,7 +116,7 @@ def mock_delete_lock_and_base_folder():
 
 @pytest.fixture
 def mock_os_path_join():
-    """Fixture to mock splitext"""
+    """Fixture to mock splitext."""
     with patch("os.path.join"):
         yield
 
@@ -170,7 +172,6 @@ def lock_kwikset_910_fixture(client, lock_kwikset_910_state):
 @pytest.fixture(name="client")
 def mock_client_fixture(controller_state, version_state, log_config_state):
     """Mock a client."""
-
     with patch(
         "homeassistant.components.zwave_js.ZwaveClient", autospec=True
     ) as client_class:
@@ -276,7 +277,7 @@ def mock_openzwave():
 
 @pytest.fixture
 async def mock_using_ozw():
-    """Fixture to mock using_ozw in helpers"""
+    """Fixture to mock using_ozw in helpers."""
     with patch(
         "custom_components.keymaster.helpers.async_using_zwave_js", return_value=False
     ), patch(
@@ -303,7 +304,7 @@ async def mock_zwavejs_get_usercodes():
 
 @pytest.fixture
 async def mock_using_zwavejs():
-    """Fixture to mock using_ozw in helpers"""
+    """Fixture to mock using_ozw in helpers."""
     with patch(
         "custom_components.keymaster.binary_sensor.async_using_zwave_js",
         return_value=True,

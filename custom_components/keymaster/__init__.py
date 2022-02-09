@@ -103,7 +103,7 @@ except (ModuleNotFoundError, ImportError):
     pass
 
 try:
-    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN
+    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     pass
 
@@ -552,9 +552,11 @@ class LockUsercodeUpdateCoordinator(DataUpdateCoordinator):
         self.data = {}
 
     def _invalid_code(self, code_slot):
-        """Return the PIN slot value as we are unable to read the slot value
-        from the lock."""
+        """Handle invalid slot codes.
 
+        Return the PIN slot value as we are unable to read the slot value
+        from the lock.
+        """
         _LOGGER.debug("Work around code in use.")
         # This is a fail safe and should not be needing to return ""
         data = ""
@@ -579,7 +581,10 @@ class LockUsercodeUpdateCoordinator(DataUpdateCoordinator):
         return data
 
     async def async_update_usercodes(self) -> Dict[Union[str, int], Any]:
-        """Wrapper to update usercodes."""
+        """Update usercodes.
+        
+        Wraps native built in functions.
+        """
         self.slots = get_code_slots_list(self.config_entry.data)
         if not self.network_sensor:
             self.network_sensor = self.ent_reg.async_get_entity_id(

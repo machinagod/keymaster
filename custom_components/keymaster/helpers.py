@@ -84,14 +84,14 @@ except (ModuleNotFoundError, ImportError):
 # and assuming it can't be if the dependent packages aren't
 # installed on this Home Assistant instance
 try:
-    import openzwavemqtt as ozw_module  # noqa: F401
+    import openzwavemqtt as ozw_module  # pylint: disable=unused-import
 
     from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     OZW_SUPPORTED = False
 
 try:
-    import openzwave as zwave_module  # noqa: F401
+    import openzwave as zwave_module  # pylint: disable=unused-import
 
     from homeassistant.components.zwave.const import DOMAIN as ZWAVE_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
@@ -99,7 +99,7 @@ except (ModuleNotFoundError, ImportError):
 
 # Attempt to import ZHA domain
 try:
-    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN
+    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     ZHA_SUPPORTED = False
 
@@ -113,7 +113,7 @@ def _async_using(
     entity_id: Optional[str],
     ent_reg: Optional[EntityRegistry],
 ) -> bool:
-    """Base function for using_<zwave integration> logic."""
+    """Function for using_<zwave integration> logic."""
     if not (lock or (entity_id and ent_reg)):
         raise Exception("Missing arguments")
 
@@ -129,7 +129,7 @@ def _async_using(
 def async_using_ozw(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
-    """Returns whether the ozw integration is configured."""
+    """Return whether the ozw integration is configured."""
     return OZW_SUPPORTED and _async_using(OZW_DOMAIN, lock, entity_id, ent_reg)
 
 
@@ -137,7 +137,7 @@ def async_using_ozw(
 def async_using_zwave(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
-    """Returns whether the zwave integration is configured."""
+    """Return whether the zwave integration is configured."""
     return ZWAVE_SUPPORTED and _async_using(ZWAVE_DOMAIN, lock, entity_id, ent_reg)
 
 
@@ -145,7 +145,7 @@ def async_using_zwave(
 def async_using_zwave_js(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
-    """Returns whether the zwave_js integration is configured."""
+    """Return whether the zwave_js integration is configured."""
     return ZWAVE_JS_SUPPORTED and _async_using(
         ZWAVE_JS_DOMAIN, lock, entity_id, ent_reg
     )
@@ -155,7 +155,7 @@ def async_using_zwave_js(
 def async_using_zha(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
-    """Returns whether the zha integration is configured."""
+    """Return whether the zha integration is configured."""
     return ZHA_SUPPORTED and _async_using(ZHA_DOMAIN, lock, entity_id, ent_reg)
 
 
@@ -323,7 +323,7 @@ def handle_state_change(
     old_state: State,  # pylint: disable=unused-argument
     new_state: State,
 ) -> None:
-    """Listener to track state changes to lock entities."""
+    """Listen to track state changes to lock entities."""
     primary_lock: KeymasterLock = hass.data[DOMAIN][config_entry.entry_id][PRIMARY_LOCK]
     child_locks: List[KeymasterLock] = hass.data[DOMAIN][config_entry.entry_id][
         CHILD_LOCKS

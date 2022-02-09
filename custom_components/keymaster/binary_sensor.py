@@ -67,7 +67,7 @@ except (ModuleNotFoundError, ImportError):
     pass
 
 try:
-    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN
+    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     pass
 
@@ -81,7 +81,7 @@ def generate_binary_sensor_name(lock_name: str) -> str:
 
 
 async def async_setup_entry(hass, config_entry, async_add_entities):
-    """Setup config entry."""
+    """Configure platform."""
     primary_lock = hass.data[DOMAIN][config_entry.entry_id][PRIMARY_LOCK]
     child_locks = hass.data[DOMAIN][config_entry.entry_id][CHILD_LOCKS]
     if async_using_zwave_js(lock=primary_lock):
@@ -300,12 +300,12 @@ class ZwaveNetworkReadySensor(BaseNetworkReadySensor):
 
     @callback
     def async_network_ready_callback(self):
-        """Called when network is ready."""
+        """Call when network is ready."""
         self.async_set_is_on_property(True)
 
     @callback
     def async_network_not_ready_callback(self):
-        """Called when network is not ready."""
+        """Call when network is not ready."""
         self.async_set_is_on_property(False)
 
     @callback

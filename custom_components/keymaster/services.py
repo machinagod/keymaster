@@ -48,8 +48,8 @@ try:
     from zwave_js_server.util.lock import get_usercode_from_node
 
     from homeassistant.components.zwave_js.const import DOMAIN as ZWAVE_JS_DOMAIN  # pylint: disable=ungrouped-imports
-    from homeassistant.components.zwave_js.helpers import async_get_node_from_entity_id
-    from homeassistant.components.zwave_js.lock import (
+    from homeassistant.components.zwave_js.helpers import async_get_node_from_entity_id  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zwave_js.lock import (  # pylint: disable=ungrouped-imports
         SERVICE_CLEAR_LOCK_USERCODE,
         SERVICE_SET_LOCK_USERCODE,
     )
@@ -65,8 +65,8 @@ except (ModuleNotFoundError, ImportError):
 
 # Attempt to import ZHA domain
 try:
-    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN
-    from homeassistant.components.zha.lock import (
+    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zha.lock import (  # pylint: disable=ungrouped-imports
         SERVICE_SET_LOCK_USER_CODE,
         SERVICE_CLEAR_LOCK_USER_CODE,
     )
@@ -82,7 +82,7 @@ CLEAR_USERCODE = "clear_usercode"
 async def init_child_locks(
     hass: HomeAssistant, start: int, slots: int, lockname: str
 ) -> None:
-    """Populates child locks values with parent values"""
+    """Populate child locks values with parent values."""
     # LOCKNAME_copy_from_parent_TEMPLATENUM
     _LOGGER.debug("Syncing lock: %s", lockname)
     for x in range(start, start + slots):  # pylint: disable=invalid-name

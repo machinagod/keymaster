@@ -86,20 +86,26 @@ except (ModuleNotFoundError, ImportError):
 try:
     import openzwavemqtt as ozw_module  # pylint: disable=unused-import
 
-    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
+    from homeassistant.components.ozw import (
+        DOMAIN as OZW_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     OZW_SUPPORTED = False
 
 try:
     import openzwave as zwave_module  # pylint: disable=unused-import
 
-    from homeassistant.components.zwave.const import DOMAIN as ZWAVE_DOMAIN  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zwave.const import (
+        DOMAIN as ZWAVE_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     ZWAVE_SUPPORTED = False
 
 # Attempt to import ZHA domain
 try:
-    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zha.core.const import (
+        DOMAIN as ZHA_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     ZHA_SUPPORTED = False
 
@@ -237,7 +243,9 @@ def output_to_file_from_template(
 ) -> None:
     """Generate file output from input templates while replacing string references."""
     _LOGGER.debug("Starting generation of %s from %s", output_filename, input_filename)
-    with open(os.path.join(input_path, input_filename), "r", encoding="utf8") as infile, open(
+    with open(
+        os.path.join(input_path, input_filename), "r", encoding="utf8"
+    ) as infile, open(
         os.path.join(output_path, output_filename), write_mode, encoding="utf8"
     ) as outfile:
         for line in infile:

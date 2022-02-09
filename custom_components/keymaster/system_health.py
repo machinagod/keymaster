@@ -7,7 +7,8 @@ from .const import DOMAIN
 
 @callback
 def async_register(
-    hass: HomeAssistant, register: system_health.SystemHealthRegistration  # pylint: disable=unused-argument
+    hass: HomeAssistant,
+    register: system_health.SystemHealthRegistration,  # pylint: disable=unused-argument
 ) -> None:
     """Register system health callbacks."""
     register.async_register_info(system_health_info)

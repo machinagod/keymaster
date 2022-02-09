@@ -67,7 +67,9 @@ except (ModuleNotFoundError, ImportError):
     pass
 
 try:
-    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zha.core.const import (
+        DOMAIN as ZHA_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     pass
 

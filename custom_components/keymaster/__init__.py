@@ -158,8 +158,8 @@ async def homeassistant_started_listener(
 
 
 async def async_setup(
-    hass: HomeAssistant, config: Config
-) -> bool:  # pylint: disable=unused-argument
+    hass: HomeAssistant, config: Config  # pylint: disable=unused-argument
+) -> bool:
     """Disallow configuration via YAML."""
     return True
 

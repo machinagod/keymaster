@@ -47,7 +47,7 @@ try:
     from openzwave.network import ZWaveNetwork
     from pydispatch import dispatcher
 
-    from homeassistant.components.zwave.const import (
+    from homeassistant.components.zwave.const import (  # pylint: disable=ungrouped-imports
         DATA_NETWORK as ZWAVE_DATA_NETWORK,
         DOMAIN as ZWAVE_DOMAIN,
     )

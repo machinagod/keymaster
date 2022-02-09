@@ -57,10 +57,10 @@ from .const import (
 )
 from .lock import KeymasterLock
 
-zwave_supported = True
-ozw_supported = True
-zwave_js_supported = True
-zha_supported = True
+ZWAVE_SUPPORTED = True
+OZW_SUPPORTED = True
+ZWAVE_JS_SUPPORTED = True
+ZHA_SUPPORTED = True
 
 # TODO: At some point we should deprecate ozw and zwave and require zwave_js.
 # At that point, we will not need this try except logic and can remove a bunch
@@ -68,7 +68,7 @@ zha_supported = True
 try:
     from zwave_js_server.const.command_class.lock import ATTR_CODE_SLOT
 
-    from homeassistant.components.zwave_js.const import (
+    from homeassistant.components.zwave_js.const import (  # pylint: disable=ungrouped-imports
         ATTR_EVENT_LABEL,
         ATTR_NODE_ID,
         ATTR_PARAMETERS,
@@ -76,7 +76,7 @@ try:
         DOMAIN as ZWAVE_JS_DOMAIN,
     )
 except (ModuleNotFoundError, ImportError):
-    zwave_js_supported = False
+    ZWAVE_JS_SUPPORTED = False
     ATTR_CODE_SLOT = "code_slot"
     from .const import ATTR_NODE_ID
 
@@ -86,22 +86,22 @@ except (ModuleNotFoundError, ImportError):
 try:
     import openzwavemqtt as ozw_module  # noqa: F401
 
-    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN
+    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
-    ozw_supported = False
+    OZW_SUPPORTED = False
 
 try:
     import openzwave as zwave_module  # noqa: F401
 
-    from homeassistant.components.zwave.const import DOMAIN as ZWAVE_DOMAIN
+    from homeassistant.components.zwave.const import DOMAIN as ZWAVE_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
-    zwave_supported = False
+    ZWAVE_SUPPORTED = False
 
 # Attempt to import ZHA domain
 try:
     from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN
 except (ModuleNotFoundError, ImportError):
-    zha_supported = False
+    ZHA_SUPPORTED = False
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -130,7 +130,7 @@ def async_using_ozw(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
     """Returns whether the ozw integration is configured."""
-    return ozw_supported and _async_using(OZW_DOMAIN, lock, entity_id, ent_reg)
+    return OZW_SUPPORTED and _async_using(OZW_DOMAIN, lock, entity_id, ent_reg)
 
 
 @callback
@@ -138,7 +138,7 @@ def async_using_zwave(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
     """Returns whether the zwave integration is configured."""
-    return zwave_supported and _async_using(ZWAVE_DOMAIN, lock, entity_id, ent_reg)
+    return ZWAVE_SUPPORTED and _async_using(ZWAVE_DOMAIN, lock, entity_id, ent_reg)
 
 
 @callback
@@ -146,7 +146,7 @@ def async_using_zwave_js(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
     """Returns whether the zwave_js integration is configured."""
-    return zwave_js_supported and _async_using(
+    return ZWAVE_JS_SUPPORTED and _async_using(
         ZWAVE_JS_DOMAIN, lock, entity_id, ent_reg
     )
 
@@ -156,7 +156,7 @@ def async_using_zha(
     lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
 ) -> bool:
     """Returns whether the zha integration is configured."""
-    return zha_supported and _async_using(ZHA_DOMAIN, lock, entity_id, ent_reg)
+    return ZHA_SUPPORTED and _async_using(ZHA_DOMAIN, lock, entity_id, ent_reg)
 
 
 def get_node_id(hass: HomeAssistant, entity_id: str) -> Optional[str]:
@@ -237,8 +237,8 @@ def output_to_file_from_template(
 ) -> None:
     """Generate file output from input templates while replacing string references."""
     _LOGGER.debug("Starting generation of %s from %s", output_filename, input_filename)
-    with open(os.path.join(input_path, input_filename), "r") as infile, open(
-        os.path.join(output_path, output_filename), write_mode
+    with open(os.path.join(input_path, input_filename), "r", encoding="utf8") as infile, open(
+        os.path.join(output_path, output_filename), write_mode, encoding="utf8"
     ) as outfile:
         for line in infile:
             for src, target in replacements_dict.items():
@@ -320,7 +320,7 @@ def handle_state_change(
     hass: HomeAssistant,
     config_entry: ConfigEntry,
     changed_entity: str,
-    old_state: State,
+    old_state: State,  # pylint: disable=unused-argument
     new_state: State,
 ) -> None:
     """Listener to track state changes to lock entities."""
@@ -437,7 +437,7 @@ async def async_reset_code_slot_if_pin_unknown(
     Used when a code slot is first generated so we can give all input helpers
     an initial state.
     """
-    for x in range(start_from, start_from + code_slots):
+    for x in range(start_from, start_from + code_slots):  # pylint: disable=invalid-name
         pin_state = hass.states.get(f"input_text.{lock_name}_pin_{x}")
         if pin_state and pin_state.state == STATE_UNKNOWN:
             await hass.services.async_call(

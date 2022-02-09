@@ -47,7 +47,7 @@ from .lock import KeymasterLock
 try:
     from zwave_js_server.util.lock import get_usercode_from_node
 
-    from homeassistant.components.zwave_js.const import DOMAIN as ZWAVE_JS_DOMAIN
+    from homeassistant.components.zwave_js.const import DOMAIN as ZWAVE_JS_DOMAIN  # pylint: disable=ungrouped-imports
     from homeassistant.components.zwave_js.helpers import async_get_node_from_entity_id
     from homeassistant.components.zwave_js.lock import (
         SERVICE_CLEAR_LOCK_USERCODE,
@@ -59,7 +59,7 @@ except (ModuleNotFoundError, ImportError):
 try:
     from openzwavemqtt.const import CommandClass
 
-    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN
+    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     pass
 
@@ -85,7 +85,7 @@ async def init_child_locks(
     """Populates child locks values with parent values"""
     # LOCKNAME_copy_from_parent_TEMPLATENUM
     _LOGGER.debug("Syncing lock: %s", lockname)
-    for x in range(start, start + slots):
+    for x in range(start, start + slots):  # pylint: disable=invalid-name
         the_service = f"{lockname}_copy_from_parent_{x}"
         _LOGGER.debug("Attempting to call script: %s", the_service)
         await call_service(hass, SCRIPT_DOMAIN, the_service)
@@ -384,7 +384,7 @@ def generate_package_files(hass: HomeAssistant, name: str) -> None:
 
     _LOGGER.debug("Creating per slot YAML and lovelace cards...")
     # Replace variables in code slot files
-    for x in range(start_from, start_from + code_slots):
+    for x in range(start_from, start_from + code_slots):  # pylint: disable=invalid-name
         replacements["TEMPLATENUM"] = str(x)
 
         for in_f, out_f, write_mode in (

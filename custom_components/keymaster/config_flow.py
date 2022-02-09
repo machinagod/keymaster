@@ -14,7 +14,6 @@ from homeassistant.components.sensor import DOMAIN as SENSORS_DOMAIN
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers import config_validation as cv
 from homeassistant.util import slugify
-from homeassistant.util.yaml.loader import load_yaml
 
 from .const import (
     CONF_ALARM_LEVEL_OR_USER_CODE_ENTITY_ID,
@@ -283,10 +282,10 @@ async def _start_config_flow(
 
         # Regular flow has an async function, options flow has a sync function
         # so we need to handle them conditionally
-        if asyncio.iscoroutinefunction(cls._get_unique_name_error):
-            errors.update(await cls._get_unique_name_error(user_input))
+        if asyncio.iscoroutinefunction(cls._get_unique_name_error):  # pylint: disable=protected-access
+            errors.update(await cls._get_unique_name_error(user_input))  # pylint: disable=protected-access
         else:
-            errors.update(cls._get_unique_name_error(user_input))
+            errors.update(cls._get_unique_name_error(user_input))  # pylint: disable=protected-access
 
         # Validate that package path is relative
         if os.path.isabs(user_input[CONF_PATH]):

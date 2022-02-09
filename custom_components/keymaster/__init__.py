@@ -662,7 +662,8 @@ class LockUsercodeUpdateCoordinator(DataUpdateCoordinator):
 
         # pull codes for Zigbee
         elif async_using_zha(lock=self._primary_lock):
-            doorlock_channel = self._primary_lock.cluster_channels.get(CHANNEL_DOORLOCK)
+            lock_entity = self._primary_lock.lock_entity_id
+            doorlock_channel = lock_entity.cluster_channels.get(CHANNEL_DOORLOCK)
             for slot in self.slots:
                 usercode = doorlock_channel.async_get_user_code(slot)
                 if usercode and "*" in str(usercode):

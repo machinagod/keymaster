@@ -86,14 +86,18 @@ except (ModuleNotFoundError, ImportError):
 try:
     import openzwavemqtt as ozw_module  # pylint: disable=unused-import
 
-    from homeassistant.components.ozw import DOMAIN as OZW_DOMAIN  # pylint: disable=ungrouped-imports
+    from homeassistant.components.ozw import (
+        DOMAIN as OZW_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     OZW_SUPPORTED = False
 
 try:
     import openzwave as zwave_module  # pylint: disable=unused-import
 
-    from homeassistant.components.zwave.const import DOMAIN as ZWAVE_DOMAIN  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zwave.const import (
+        DOMAIN as ZWAVE_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
 except (ModuleNotFoundError, ImportError):
     ZWAVE_SUPPORTED = False
 
@@ -116,7 +120,7 @@ def _async_using(
     ent_reg: Optional[EntityRegistry],
 ) -> bool:
     """Boolean function.
-    
+
     For the using_<zwave integration> logic.
     """
     if not (lock or (entity_id and ent_reg)):

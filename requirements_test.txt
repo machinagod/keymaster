@@ -6,3 +6,7 @@ pytest-homeassistant-custom-component
 black
 isort
 pydispatcher
+flake8
+pydocstyle
+pylint
+mypy

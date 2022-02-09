@@ -314,14 +314,10 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
     # we need to listen for lock state changes
     locks_to_watch = []
     for lock in [primary_lock, *child_locks]:
-        if (
-            lock.alarm_level_or_user_code_entity_id
-            not in (
-                None,
-                "sensor.fake",
-            )
-            and lock.alarm_type_or_access_control_entity_id not in (None, "sensor.fake")
-        ):
+        if lock.alarm_level_or_user_code_entity_id not in (
+            None,
+            "sensor.fake",
+        ) and lock.alarm_type_or_access_control_entity_id not in (None, "sensor.fake"):
             locks_to_watch.append(lock)
 
     if locks_to_watch:
@@ -511,14 +507,10 @@ async def update_listener(hass: HomeAssistant, config_entry: ConfigEntry) -> Non
     # sensors
     locks_to_watch = []
     for lock in [primary_lock, *child_locks]:
-        if (
-            lock.alarm_level_or_user_code_entity_id
-            not in (
-                None,
-                "sensor.fake",
-            )
-            and lock.alarm_type_or_access_control_entity_id not in (None, "sensor.fake")
-        ):
+        if lock.alarm_level_or_user_code_entity_id not in (
+            None,
+            "sensor.fake",
+        ) and lock.alarm_type_or_access_control_entity_id not in (None, "sensor.fake"):
             locks_to_watch.append(lock)
 
     if locks_to_watch:

@@ -33,7 +33,8 @@ disable=
   broad-except,
   too-many-lines,
   too-many-locals,
-  ungrouped-imports
+  ungrouped-imports,
+  protected-access
 
 [REFACTORING]
 

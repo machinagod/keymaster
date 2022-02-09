@@ -115,7 +115,10 @@ def _async_using(
     entity_id: Optional[str],
     ent_reg: Optional[EntityRegistry],
 ) -> bool:
-    """Function for using_<zwave integration> logic."""
+    """Boolean function.
+    
+    For the using_<zwave integration> logic.
+    """
     if not (lock or (entity_id and ent_reg)):
         raise Exception("Missing arguments")
 

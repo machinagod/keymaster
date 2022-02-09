@@ -48,9 +48,7 @@ try:
     from zwave_js_server.util.lock import get_usercode_from_node
 
     from homeassistant.components.zwave_js.const import DOMAIN as ZWAVE_JS_DOMAIN  # pylint: disable=ungrouped-imports
-    from homeassistant.components.zwave_js.helpers import (
-        async_get_node_from_entity_id,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zwave_js.helpers import async_get_node_from_entity_id  # pylint: disable=ungrouped-imports
     from homeassistant.components.zwave_js.lock import (  # pylint: disable=ungrouped-imports
         SERVICE_CLEAR_LOCK_USERCODE,
         SERVICE_SET_LOCK_USERCODE,
@@ -67,9 +65,7 @@ except (ModuleNotFoundError, ImportError):
 
 # Attempt to import ZHA domain
 try:
-    from homeassistant.components.zha.core.const import (
-        DOMAIN as ZHA_DOMAIN,
-    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zha.core.const import DOMAIN as ZHA_DOMAIN  # pylint: disable=ungrouped-imports
     from homeassistant.components.zha.lock import (  # pylint: disable=ungrouped-imports
         SERVICE_SET_LOCK_USER_CODE,
         SERVICE_CLEAR_LOCK_USER_CODE,

@@ -286,9 +286,7 @@ async def _start_config_flow(
         # Regular flow has an async function, options flow has a sync function
         # so we need to handle them conditionally
         if asyncio.iscoroutinefunction(cls._get_unique_name_error):  # pylint: disable=protected-access
-            errors.update(
-                await cls._get_unique_name_error(user_input)
-            )  # pylint: disable=protected-access
+            errors.update(await cls._get_unique_name_error(user_input))  # pylint: disable=protected-access
         else:
             errors.update(cls._get_unique_name_error(user_input))  # pylint: disable=protected-access
 

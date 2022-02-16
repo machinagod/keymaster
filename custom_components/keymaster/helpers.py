@@ -21,6 +21,7 @@ from homeassistant.const import (
     SERVICE_RELOAD,
     STATE_UNAVAILABLE,
     STATE_UNKNOWN,
+    Platform,
 )
 from homeassistant.core import Event, HomeAssistant, State, callback
 from homeassistant.exceptions import ServiceNotFound
@@ -234,6 +235,26 @@ async def async_update_zwave_js_nodes_and_devices(
 
         lock.zwave_js_lock_node = client.driver.controller.nodes[node_id]
         lock.zwave_js_lock_device = lock_dev_reg_entry
+
+async def async_update_zha_devices(    
+    hass: HomeAssistant,
+    entry_id: str,
+    primary_lock: KeymasterLock,
+    child_locks: List[KeymasterLock],
+) -> None:
+    """Update ZHA devices."""
+    zha_devices = hass.data[ZHA_DOMAIN][Platform.LOCK]
+    _LOGGER.debug("ZHA Devices: %s", zha_devices)
+    ent_reg = async_get_entity_registry(hass)
+    dev_reg = async_get_device_registry(hass)    
+    for lock in [primary_lock, *child_locks]:
+        lock_ent_reg_entry = ent_reg.async_get(lock.lock_entity_id)
+        if not lock_ent_reg_entry:
+            continue        
+        lock_dev_reg_entry = dev_reg.async_get(lock_ent_reg_entry.device_id)
+        if not lock_dev_reg_entry:
+            continue        
+        lock.zha_device = lock_dev_reg_entry
 
 
 def output_to_file_from_template(

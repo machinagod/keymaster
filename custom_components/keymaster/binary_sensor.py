@@ -23,6 +23,7 @@ from .const import (
 )
 from .helpers import (
     async_update_zwave_js_nodes_and_devices,
+    async_update_zha_devices,
     async_using_ozw,
     async_using_zha,
     async_using_zwave,
@@ -188,6 +189,16 @@ class ZHANetworkReadySensor(BaseNetworkReadySensor):
             return
 
         self.async_set_is_on_property(network_ready, False)
+
+        # If we just turned the sensor on, we need to get the latest lock
+        # nodes and devices
+        if self.is_on:
+            await async_update_zha_devices(
+                self.hass,
+                self.lock_config_entry_id,
+                self.primary_lock,
+                self.child_locks,
+            )        
 
 
 class ZwaveJSNetworkReadySensor(BaseNetworkReadySensor):

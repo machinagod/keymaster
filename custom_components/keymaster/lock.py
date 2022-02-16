@@ -19,3 +19,4 @@ class KeymasterLock:
     zwave_js_lock_node = None
     zwave_js_lock_device: DeviceEntry = None
     parent: Optional[str] = None
+    zha_device: DeviceEntry = None

@@ -21,6 +21,7 @@ from homeassistant.const import (
     SERVICE_RELOAD,
     STATE_UNAVAILABLE,
     STATE_UNKNOWN,
+    Platform,
 )
 from homeassistant.core import Event, HomeAssistant, State, callback
 from homeassistant.exceptions import ServiceNotFound
@@ -58,6 +59,7 @@ from .const import (
 from .lock import KeymasterLock
 
 zwave_js_supported = True
+zha_supported = True
 
 try:
     from zwave_js_server.const.command_class.lock import ATTR_CODE_SLOT
@@ -73,6 +75,14 @@ except (ModuleNotFoundError, ImportError):
     zwave_js_supported = False
     ATTR_CODE_SLOT = "code_slot"
     from .const import ATTR_NODE_ID
+
+# Attempt to import ZHA domain
+try:
+    from homeassistant.components.zha.core.const import (
+        DOMAIN as ZHA_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
+except (ModuleNotFoundError, ImportError):
+    zha_supported = False
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -105,6 +115,13 @@ def async_using_zwave_js(
         ZWAVE_JS_DOMAIN, lock, entity_id, ent_reg
     )
 
+
+@callback
+def async_using_zha(
+    lock: KeymasterLock = None, entity_id: str = None, ent_reg: EntityRegistry = None
+) -> bool:
+    """Return whether the zha integration is configured."""
+    return zha_supported and _async_using(ZHA_DOMAIN, lock, entity_id, ent_reg)
 
 def get_code_slots_list(data: Dict[str, int]) -> List[int]:
     """Get list of code slots."""
@@ -163,6 +180,26 @@ async def async_update_zwave_js_nodes_and_devices(
 
         lock.zwave_js_lock_node = client.driver.controller.nodes[node_id]
         lock.zwave_js_lock_device = lock_dev_reg_entry
+
+async def async_update_zha_devices(
+    hass: HomeAssistant,
+    entry_id: str,
+    primary_lock: KeymasterLock,
+    child_locks: List[KeymasterLock],
+) -> None:
+    """Update ZHA devices."""
+    zha_devices = hass.data[ZHA_DOMAIN][Platform.LOCK]
+    _LOGGER.debug("ZHA Devices: %s", zha_devices)
+    ent_reg = async_get_entity_registry(hass)
+    dev_reg = async_get_device_registry(hass)
+    for lock in [primary_lock, *child_locks]:
+        lock_ent_reg_entry = ent_reg.async_get(lock.lock_entity_id)
+        if not lock_ent_reg_entry:
+            continue
+        lock_dev_reg_entry = dev_reg.async_get(lock_ent_reg_entry.device_id)
+        if not lock_dev_reg_entry:
+            continue
+        lock.zha_device = lock_dev_reg_entry
 
 
 def output_to_file_from_template(

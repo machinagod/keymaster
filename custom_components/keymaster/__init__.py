@@ -66,6 +66,7 @@ from .exceptions import (
 from .helpers import (
     async_reload_package_platforms,
     async_reset_code_slot_if_pin_unknown,
+    async_using_zha,
     async_using_zwave_js,
     delete_folder,
     delete_lock_and_base_folder,
@@ -91,6 +92,15 @@ try:
     from homeassistant.components.zwave_js import ZWAVE_JS_NOTIFICATION_EVENT
 except (ModuleNotFoundError, ImportError):
     pass
+
+# Attempt to import ZHA domain
+try:
+    from homeassistant.components.zha.core.const import (
+        CHANNEL_DOORLOCK,
+    )  # pylint: disable=ungrouped-imports
+except (ModuleNotFoundError, ImportError):
+    pass
+
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -618,6 +628,22 @@ class LockUsercodeUpdateCoordinator(DataUpdateCoordinator):
                 else:
                     _LOGGER.debug("DEBUG: Code slot %s value: %s", code_slot, usercode)
                     data[code_slot] = usercode
+
+        # pull codes for Zigbee
+        elif async_using_zha(lock=self._primary_lock):
+            lock_entity = self._primary_lock.lock_entity_id
+            doorlock_channel = lock_entity.cluster_channels.get(CHANNEL_DOORLOCK)
+            for slot in self.slots:
+                usercode = doorlock_channel.async_get_user_code(slot)
+                if usercode and "*" in str(usercode):
+                    _LOGGER.debug(
+                        "DEBUG: Ignoring code slot with * in value for code slot %s",
+                        slot,
+                    )
+                    data[slot] = self._invalid_code(slot)
+                else:
+                    _LOGGER.debug("DEBUG: Code slot %s value: %s", slot, usercode)
+                    data[slot] = usercode
 
         else:
             raise ZWaveIntegrationNotConfiguredError

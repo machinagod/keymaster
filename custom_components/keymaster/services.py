@@ -25,6 +25,7 @@ from .const import (
 )
 from .exceptions import ZWaveIntegrationNotConfiguredError
 from .helpers import (
+    async_using_zha,
     async_using_zwave_js,
     get_code_slots_list,
     output_to_file_from_template,
@@ -41,6 +42,18 @@ try:
     from homeassistant.components.zwave_js.lock import (
         SERVICE_CLEAR_LOCK_USERCODE,
         SERVICE_SET_LOCK_USERCODE,
+    )
+except (ModuleNotFoundError, ImportError):
+    pass
+
+# Attempt to import ZHA domain
+try:
+    from homeassistant.components.zha.core.const import (
+        DOMAIN as ZHA_DOMAIN,
+    )  # pylint: disable=ungrouped-imports
+    from homeassistant.components.zha.lock import (  # pylint: disable=ungrouped-imports
+        SERVICE_SET_LOCK_USER_CODE,
+        SERVICE_CLEAR_LOCK_USER_CODE,
     )
 except (ModuleNotFoundError, ImportError):
     pass
@@ -119,6 +132,10 @@ async def add_code(
             hass, ZWAVE_JS_DOMAIN, SERVICE_SET_LOCK_USERCODE, servicedata
         )
 
+    elif async_using_zha(entity_id=entity_id, ent_reg=async_get_entity_registry(hass)):
+        servicedata[ATTR_ENTITY_ID] = entity_id
+        await call_service(hass, ZHA_DOMAIN, SERVICE_SET_LOCK_USER_CODE, servicedata)
+
     else:
         raise ZWaveIntegrationNotConfiguredError
 
@@ -137,6 +154,13 @@ async def clear_code(hass: HomeAssistant, entity_id: str, code_slot: int) -> Non
         await call_service(
             hass, ZWAVE_JS_DOMAIN, SERVICE_CLEAR_LOCK_USERCODE, servicedata
         )
+
+    elif async_using_zha(entity_id=entity_id, ent_reg=async_get_entity_registry(hass)):
+        servicedata = {
+            ATTR_ENTITY_ID: entity_id,
+            ATTR_CODE_SLOT: code_slot,
+        }
+        await call_service(hass, ZHA_DOMAIN, SERVICE_CLEAR_LOCK_USER_CODE, servicedata)
 
     else:
         raise ZWaveIntegrationNotConfiguredError

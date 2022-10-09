@@ -1,4 +1,5 @@
 homeassistant
 zwave-js-server-python
+pydevd-pycharm
 pyserial
 pyudev

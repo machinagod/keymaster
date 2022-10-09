@@ -1,3 +1,13 @@
+[tool.poetry]
+name = "keymaster"
+version = "4.1.2"
+description = "This is a custom component to manage Z-Wave locks"
+authors = ["Keaton Taylor <keatonstaylor@gmail.com>","Alan D. Tse <alandtse@gmail.com>"]
+license = "Apache-2.0"
+
+[tool.poetry.dependencies]
+pydevd-pycharm = ">=222.4167.33"
+
 [tool.black]
 target-version = ["py38"]
 exclude = 'generated'

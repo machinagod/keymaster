@@ -194,9 +194,11 @@ async def async_update_zha_devices(
     dev_reg = async_get_device_registry(hass)
     for lock in [primary_lock, *child_locks]:
         lock_ent_reg_entry = ent_reg.async_get(lock.lock_entity_id)
+        _LOGGER.debug("ZHA lock ent: %s", lock_ent_reg_entry)
         if not lock_ent_reg_entry:
             continue
         lock_dev_reg_entry = dev_reg.async_get(lock_ent_reg_entry.device_id)
+        _LOGGER.debug("ZHA lock dev: %s", lock_dev_reg_entry)
         if not lock_dev_reg_entry:
             continue
         lock.zha_device = lock_dev_reg_entry

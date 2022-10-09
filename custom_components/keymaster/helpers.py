@@ -189,6 +189,7 @@ async def async_update_zha_devices(
 ) -> None:
     """Update ZHA devices."""
     zha_devices = hass.data[ZHA_DOMAIN][Platform.LOCK]
+    _LOGGER.debug("ZHA Devices: %s", hass.data[ZHA_DOMAIN])
     _LOGGER.debug("ZHA Devices: %s", zha_devices)
     ent_reg = async_get_entity_registry(hass)
     dev_reg = async_get_device_registry(hass)

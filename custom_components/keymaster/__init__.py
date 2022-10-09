@@ -101,9 +101,6 @@ try:
 except (ModuleNotFoundError, ImportError):
     pass
 
-import pydevd_pycharm
-pydevd_pycharm.settrace('localhost', port=23, stdoutToServer=True, stderrToServer=True)
-
 _LOGGER = logging.getLogger(__name__)
 
 SERVICE_GENERATE_PACKAGE = "generate_package"
